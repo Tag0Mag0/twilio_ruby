@@ -4,12 +4,14 @@ require 'twilio-ruby'
 print "Enter locale: "
 case gets.chomp
 when "en"
-  phone = "+12244200655"
+  country_code = "+"
 when "pt-BR"
-  phone = "+5511991517625"
+  country_code = "+55"
 when "es-PE"
-  phone = "+51958923335"
+  country_code = "+51"
 end
+print "Enter number with area code: "
+phone = gets.chomp
 print "Enter message: "
 message = gets.chomp
 
@@ -21,9 +23,9 @@ puts ENV['ACCOUNT_SID']
 @account = @client.account
 
 begin
-  @message = @account.sms.messages.create({ from: "+13125488213", to: "#{phone}", body: message.force_encoding("ISO-8859-1") })
+  @message = @account.sms.messages.create({ from: "+13125488213", to: "#{country_code}#{phone}", body: message.force_encoding("ISO-8859-1") })
   puts message.force_encoding("ISO-8859-1").bytesize
 rescue Twilio::REST::RequestError => err
-  puts "Error sending sms to #{phone}"
+  puts "Error sending sms to #{country_code}#{phone}"
   puts "* #{err}"
 end
